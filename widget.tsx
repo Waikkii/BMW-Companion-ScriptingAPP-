@@ -7,9 +7,19 @@ import { emptySnapshot, PALETTE, widgetModel, type Appearance } from "./atelier/
 import { LOGO_BASE64 } from "./atelier/logo"
 import { atelierDemo } from "./atelier/demo"
 import { MEDIUM_LAYOUT, SMALL_LAYOUT } from "./atelier/layout"
+import { SURFACE_STOPS, SURFACE_DIRECTION, TYPOGRAPHY } from "./atelier/appearance"
 
 function tone(key: keyof typeof PALETTE, appearance: Appearance): any {
   return appearance === "system" ? PALETTE[key] : PALETTE[key][appearance]
+}
+
+function surface(appearance: Appearance): any {
+  const style = (mode: "light" | "dark") => ({
+    gradient: SURFACE_STOPS.map(stop => ({ color: stop[mode], location: stop.location })),
+    startPoint: SURFACE_DIRECTION.start,
+    endPoint: SURFACE_DIRECTION.end,
+  })
+  return appearance === "system" ? { light: style("light"), dark: style("dark") } : style(appearance)
 }
 
 export function AtelierWidget({ snapshot, car, offline = false, needsLogin = false, unavailable = false, small = false }: {
@@ -28,10 +38,10 @@ export function AtelierWidget({ snapshot, car, offline = false, needsLogin = fal
   return (
     <VStack alignment="leading" spacing={0} padding={{ top: layout.top, horizontal: layout.horizontal, bottom: layout.bottom }}
       frame={{ maxWidth: Infinity, maxHeight: Infinity, alignment: "topLeading" }}
-      widgetBackground={color("background")} foregroundStyle={color("text")}
+      widgetBackground={surface(m.appearance)} foregroundStyle={color("text")}
       widgetURL={Script.createRunURLScheme(Script.name, { route: "overview" })}>
       <HStack spacing={5} frame={{ maxWidth: Infinity, height: layout.header }}>
-        <Text font={small ? 14.5 : 20} fontWeight="bold" lineLimit={1} minScaleFactor={0.7}>{m.title}</Text>
+        <Text font={small ? TYPOGRAPHY.title.small : TYPOGRAPHY.title.medium} fontWeight={TYPOGRAPHY.title.weight} lineLimit={1} minScaleFactor={0.7}>{m.title}</Text>
         <Spacer minLength={0} />
         {logo ? <Image image={logo} resizable scaleToFit frame={{ width: small ? 15 : 23, height: small ? 15 : 23 }} widgetAccentedRenderingMode="fullColor" /> : null}
       </HStack>
@@ -84,7 +94,7 @@ export function AtelierWidget({ snapshot, car, offline = false, needsLogin = fal
 
 function Range({ m, small = false, color }: { m: ReturnType<typeof widgetModel>; small?: boolean; color: (key: keyof typeof PALETTE) => any }) {
   return <HStack spacing={3} alignment="lastTextBaseline" frame={{ height: small ? SMALL_LAYOUT.range : MEDIUM_LAYOUT.range, alignment: "bottomLeading" }}>
-    <Text font={small ? 27 : 34} fontWeight="medium" lineLimit={1} minScaleFactor={0.7}>{m.range}</Text>
+    <Text font={small ? TYPOGRAPHY.range.small : TYPOGRAPHY.range.medium} fontWeight={TYPOGRAPHY.range.weight} lineLimit={1} minScaleFactor={0.7}>{m.range}</Text>
     <Text font={small ? 11 : 12} foregroundStyle={color("secondary")}>km</Text>
     <Text font={small ? 11 : 12} foregroundStyle={color("quiet")}>/</Text>
     <Text font={small ? 11 : 12} foregroundStyle={color("secondary")} lineLimit={1}>{m.energy}</Text>
