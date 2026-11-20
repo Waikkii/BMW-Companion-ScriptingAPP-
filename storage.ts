@@ -38,6 +38,9 @@ export const defaultSettings: CompanionSettings = {
   savedPhone: "",
   lastSeenVersion: "",
   alwaysDarkBackground: false,
+  widgetTitle: "My BMW",
+  widgetReservedText: "",
+  widgetAppearance: "system",
   energyTypeOverrides: {},
   fuelConsumptionMode: "lastTrip",
 }

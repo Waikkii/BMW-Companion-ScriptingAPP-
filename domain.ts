@@ -103,6 +103,10 @@ export interface VehicleSnapshot {
 
 export interface CompanionSettings {
   schemaVersion: 1
+  // Atelier widget: saved locally; an empty reserved line is genuinely blank.
+  widgetTitle?: string
+  widgetReservedText?: string
+  widgetAppearance?: "system" | "light" | "dark"
   privacyMode: boolean
   freshnessMinutes: number
   staleHours: number

@@ -1,5 +1,10 @@
 # dependencies / caches
 node_modules/
+dist/syntax-check/
+tests/core.generated.mjs
+tests/captcha.generated.js
+preview/renderer.js
+test-results/
 *.log
 
 # macOS
@@ -10,3 +15,11 @@ _*.tsx
 
 # 远控私有目录（含远控代码，仅本地使用，绝不提交公开仓库）
 private-remote/
+
+# Local runtime data must never be published
+.env*
+BMW-Atelier/
+local-data/
+custom-car.png
+car-image-*.png
+*.zip

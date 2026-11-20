@@ -6,11 +6,9 @@ export function makeDemoSnapshot(now = new Date()): VehicleSnapshot {
     schemaVersion: 1,
     localVehicleId: "demo-bmw-i4",
     identity: {
-      displayName: "我的 BMW i4",
+      displayName: "Demo vehicle",
       brand: "BMW",
-      model: "i4 eDrive40",
-      plateMasked: "沪A·•••28",
-      plate: "沪A·D1238",
+      model: "Demo vehicle",
     },
     energy: {
       type: "electric",
@@ -48,12 +46,6 @@ export function makeDemoSnapshot(now = new Date()): VehicleSnapshot {
     },
     charging: {
       state: "disconnected",
-    },
-    location: {
-      latitude: 31.2304,
-      longitude: 121.4737,
-      address: "上海市 · 静安区附近（演示位置）",
-      observedAt: observedAt.toISOString(),
     },
     checks: [
       {

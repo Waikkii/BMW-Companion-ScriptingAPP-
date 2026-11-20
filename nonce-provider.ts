@@ -120,7 +120,7 @@ async function fetchNonceResponse(
   } catch (error) {
     const httpUrl = url.replace(/^https:\/\//, "http://")
     if (httpUrl === url) throw error
-    console.warn(`${debugLabel}: HTTPS 失败，改用 HTTP 重试 —`, error instanceof Error ? error.message : String(error))
+    console.warn(`${debugLabel}: HTTPS 失败，改用 HTTP 重试 — ${error instanceof Error ? error.message : String(error)}`)
     return await send(httpUrl)
   }
 }

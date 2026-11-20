@@ -747,24 +747,9 @@ function WidgetPreviewPage() {
 
 function SettingsPage() {
   const settings0 = loadSettings()
-  const [noTiresLine1, setNoTiresLine1] = useState(settings0.noTiresLine1 ?? "")
-  const [noTiresLine2, setNoTiresLine2] = useState(settings0.noTiresLine2 ?? "")
-  const persistNoTiresLine1 = (value: string) => {
-    setNoTiresLine1(value)
-    saveSettings({ ...loadSettings(), noTiresLine1: value })
-    Widget.reloadAll()
-  }
-  const persistNoTiresLine2 = (value: string) => {
-    setNoTiresLine2(value)
-    saveSettings({ ...loadSettings(), noTiresLine2: value })
-    Widget.reloadAll()
-  }
-  const [alwaysDark, setAlwaysDark] = useState(settings0.alwaysDarkBackground ?? false)
-  const persistAlwaysDark = (value: boolean) => {
-    setAlwaysDark(value)
-    saveSettings({ ...loadSettings(), alwaysDarkBackground: value })
-    Widget.reloadAll()
-  }
+  const [widgetTitle, setWidgetTitle] = useState(settings0.widgetTitle ?? "My BMW")
+  const [reservedText, setReservedText] = useState(settings0.widgetReservedText ?? "")
+  const [widgetAppearance, setWidgetAppearance] = useState(settings0.widgetAppearance ?? "system")
   // 组件刷新间隔（分钟）：快照超过该时长未更新时，组件渲染时自动拉新
   const [refreshMinutes, setRefreshMinutes] = useState(settings0.refreshIntervalMinutes ?? 30)
   const persistRefreshMinutes = (value: number) => {
@@ -805,17 +790,28 @@ function SettingsPage() {
         </NavigationLink>
       </Section>
       <Section
-        header={<Text font="headline">无胎压数据时显示</Text>}
-        footer={<Text font="caption">部分车辆（如无胎压传感器的车型）不会返回四轮胎压数据，组件会空出两行。在此填入自定义文案，分别显示在组件胎压区域的两行占位处；留空则不显示占位。</Text>}
-      >
-        <TextField title="第一行" prompt="如：暂无胎压数据" value={noTiresLine1} onChanged={persistNoTiresLine1} />
-        <TextField title="第二行" prompt="如：请检查车辆配置" value={noTiresLine2} onChanged={persistNoTiresLine2} />
-      </Section>
-      <Section
         header={<Text font="headline">组件外观</Text>}
-        footer={<Text font="caption">开启后，即使手机处于浅色模式，桌面组件也始终显示深色背景（文字颜色会同步调整，保证可读）。</Text>}
+        footer={<Text font="caption">Atelier 极简布局，英文优先。预留区域默认留白，不显示车辆位置。浅色为暖白，深色为石墨灰。</Text>}
       >
-        <Toggle title="浅色模式下也显示深色背景" value={alwaysDark} onChanged={persistAlwaysDark} />
+        <TextField title="车型标题" prompt="My BMW" value={widgetTitle} onChanged={value => {
+          setWidgetTitle(value)
+          saveSettings({ ...loadSettings(), widgetTitle: value.slice(0, 80) })
+          Widget.reloadAll()
+        }} />
+        <TextField title="预留文字" prompt="留空即保留留白" value={reservedText} onChanged={value => {
+          setReservedText(value)
+          saveSettings({ ...loadSettings(), widgetReservedText: value.slice(0, 80) })
+          Widget.reloadAll()
+        }} />
+        <Picker title="外观" value={widgetAppearance} pickerStyle="menu" onChanged={(value: string) => {
+          setWidgetAppearance(value)
+          saveSettings({ ...loadSettings(), widgetAppearance: value as "system" | "light" | "dark", alwaysDarkBackground: false })
+          Widget.reloadAll()
+        }}>
+          <Text tag="system">跟随系统</Text>
+          <Text tag="light">Chalk · 浅白</Text>
+          <Text tag="dark">Graphite · 深灰</Text>
+        </Picker>
       </Section>
       <Section
         header={<Text font="headline">刷新间隔</Text>}
@@ -836,7 +832,7 @@ function SettingsPage() {
       </Section>
       <Section
         header={<Text font="headline">油耗显示</Text>}
-        footer={<Text font="caption">选择车况页与组件中显示能耗的类别。</Text>}
+        footer={<Text font="caption">选择 App 车况页中显示能耗的类别；Atelier 小组件保持精简，不显示能耗。</Text>}
       >
         <Picker
           value={fuelConsumptionMode}
