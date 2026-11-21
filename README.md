@@ -15,7 +15,7 @@
 
 ## Scriptable 版本
 
-Scriptable 源码与独立单文件放在单独的 [bmw-atelier-scriptable 仓库](https://github.com/Waikkii/bmw-atelier-scriptable)，不混入本项目。
+Scriptable 源码与独立单文件放在单独的 [BMW_scriptable 仓库](https://github.com/Waikkii/BMW_scriptable)，不混入本项目。
 
 ## 说明
 
